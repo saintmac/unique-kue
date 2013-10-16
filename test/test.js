@@ -5,6 +5,7 @@
 
 var unique_kue = require('../'),
     kue = require('kue'),
+    redis = require('redis'),
     should = require('chai').should();
 
 describe('unique-kue', function () {
@@ -16,15 +17,16 @@ describe('unique-kue', function () {
 
     describe('with several jobs that have the same id', function () {
         before(function (done) {
-            this.jobs.create_unique_delayed('email_summary', 'email-summary-123457', 7000, {title: 'dashboard1'});
-            this.jobs.create_unique_delayed('email_summary', 'email-summary-123457', 7000, {title: 'dashboard2'});
-            this.jobs.create_unique_delayed('email_summary', 'email-summary-123457', 7000, {title: 'dashboard3'});
+            this.unique_key = 'email-summary-123457';
 
+            this.jobs.create_unique_delayed('email_summary', this.unique_key, 7000, {title: 'dashboard1'});
+            this.jobs.create_unique_delayed('email_summary', this.unique_key, 7000, {title: 'dashboard2'});
+            this.jobs.create_unique_delayed('email_summary', this.unique_key, 7000, {title: 'dashboard3'});
 
             var self = this;
             setTimeout(function () {
-                self.jobs.create_unique_delayed('email_summary', 'email-summary-123457', 6000, {title: 'dashboard4'});
-                self.jobs.create_unique_delayed('email_summary', 'email-summary-123457', 6000, {title: 'dashboard5'});
+                self.jobs.create_unique_delayed('email_summary', self.unique_key, 6000, {title: 'dashboard4'});
+                self.jobs.create_unique_delayed('email_summary', self.unique_key, 6000, {title: 'dashboard5'});
                 done()
             }, 2000);
         });
@@ -39,12 +41,24 @@ describe('unique-kue', function () {
                 done()
             });
         });
+
+        it('should delete the unique_key from redis', function (done) {
+            var client = redis.createClient();
+            client.get('uq:'+this.unique_key, function (err, key) {
+                if (err) done(err);
+                else {
+                    should.not.exist(key);
+                    done();
+                }
+            });
+        });
+
     });
 
     describe('with 2 jobs that have distinct ids', function () {
         before(function (done) {
-            this.jobs.create_unique_delayed('notification', 'notification-123457', 3000, {title: 'dashboard1'});
-            this.jobs.create_unique_delayed('notification', 'notification-849309', 3000, {title: 'dashboard2'});
+            this.jobs.create_unique_delayed('notification', 'notification-123457', 3000, {title: 'dashboard6'});
+            this.jobs.create_unique_delayed('notification', 'notification-849309', 3000, {title: 'dashboard7'});
             done()
         });
 
