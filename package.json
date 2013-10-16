@@ -1,0 +1,34 @@
+{
+  "name": "unique-kue",
+  "version": "0.1.0",
+  "description": "plugin for kue, to enable unique delayed job",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --timeout 10000 --reporter Spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/saintmac/unique-kue.git"
+  },
+  "keywords": [
+    "unique",
+    "kue",
+    "queue",
+    "job",
+    "delayed",
+    "single"
+  ],
+  "author": "Martin Saint-Macary",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/saintmac/unique-kue/issues"
+  },
+  "dependencies": {
+    "redis": "~0.8.6"
+  },
+  "devDependencies": {
+    "chai": "~1.8.1",
+    "mocha": "~1.13.0",
+    "kue": "~0.6.2"
+  }
+}
