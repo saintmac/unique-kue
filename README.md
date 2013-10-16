@@ -2,6 +2,9 @@
 you want your delayed jobs to run only once even if they are triggered several time? Then you need unique-kue.
 
 unique-kue is a kue plugin that adds a new method: `jobs.create_unique_delayed(type, key, delay, options)`
+## install
+
+    npm install unique-kue
 
 ## setup
 
@@ -11,7 +14,7 @@ unique_kue = require('unique-kue');
 unique_kue.setup(kue);
 ```
 
-## usage
+## use
 
 ```javascript
 jobs = kue.createQueue();
