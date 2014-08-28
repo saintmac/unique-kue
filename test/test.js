@@ -8,6 +8,8 @@ var unique_kue = require('../'),
     redis = require('redis'),
     should = require('chai').should();
 
+var Job = kue.Job;
+
 describe('unique-kue', function () {
     before(function (done) {
         this.jobs = kue.createQueue();
@@ -81,6 +83,39 @@ describe('unique-kue', function () {
             });
         });
 
+    });
+
+    describe('deleting a job by unique_key', function () {
+        before(function (done) {
+            self = this;
+            key = 'notification-666';
+            self.unique_key = 'uq:'+key;
+            self.jobs.create_unique_delayed('notification', key, 5000, {title: 'I want to be deleted'});
+            setTimeout(function() {
+                self.jobs.client.get(self.unique_key, function (err, job_id) {
+                    if(err) return done(err);
+                    self.job_id = job_id;
+                    self.jobs.delete_unique(key);
+                    setTimeout(done, 2000);
+                });
+            }, 2000);
+        });
+
+        it('should delete the job', function(done) {
+            Job.get(self.job_id, function(err, job) {
+                should.exist(err);
+                should.not.exist(job);
+                done();
+            });
+        });
+
+        it('should delete the unique_key from redis', function(done) {
+            self.jobs.client.get(self.unique_key, function (err, value) {
+                if(err) return done(err);
+                should.not.exist(value);
+                done();
+            });
+        });
     });
 });
 
