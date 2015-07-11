@@ -12,6 +12,7 @@ unique-kue is a kue plugin that adds a new method to kue: `jobs.create_unique_de
 ```javascript
 kue = require('kue');
 unique_kue = require('unique-kue');
+jobs = kue.createQueue();
 unique_kue.setup(kue);
 ```
 
@@ -19,7 +20,6 @@ unique_kue.setup(kue);
 ### create a unique job
 
 ```javascript
-jobs = kue.createQueue();
 jobs.create_unique_delayed('email_summary', 'email-summary-project-123456', 60000, {
     title: 'project dashboard'
   , to: 'martin@saintmac.me'
