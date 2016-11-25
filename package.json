@@ -1,6 +1,6 @@
 {
   "name": "unique-kue",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "plugin for kue, to enable unique delayed job",
   "main": "index.js",
   "scripts": {
@@ -24,11 +24,11 @@
     "url": "https://github.com/saintmac/unique-kue/issues"
   },
   "dependencies": {
-    "redis": "^0.12.1"
+    "redis": "^2.6.3"
   },
   "devDependencies": {
     "chai": "~1.8.1",
-    "kue": "^0.9.4",
+    "kue": "^0.11.5",
     "mocha": "~1.13.0"
   }
 }
