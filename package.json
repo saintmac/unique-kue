@@ -1,6 +1,6 @@
 {
   "name": "unique-kue",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "plugin for kue, to enable unique delayed job",
   "main": "index.js",
   "scripts": {
